@@ -344,6 +344,29 @@ handlers._tokens.verifyToken = function(id,phone,callback){
     }
   })
 }
+//check
+handlers.checks = function(data,callback){
+  var acceptableMethods = ["post","get","put","delete"]
+  if(acceptableMethods.indexOf(data.method) > -1){
+    handlers._checks[data.method](data,callback)
+  }else{
+    callback(405)
+  }
+}
+//container fo all the checs methods
+handlers._checks = {}
+
+//checks - post
+//Required data: protool, usrl, method, successCodes, timeout Seconds
+handlers._checks.post = function(data,callback){
+  // validate inputs
+var protocol = typeof(data.queryStringObject.protocol) == 'string' && ['https','http'].indexOf(data.payload.protocol) > -1 ? data.queryStringObject.protocol: false;
+var method = typeof(data.queryStringObject.method) == 'string' && ['post','get','put','delete'].indexOf(data.payload.method) > -1 ? data.queryStringObject.method: false;
+var url = typeof(data.queryStringObject.url) == 'string' && data.queryStringObject.url.trim().length > 0 ? data.queryStringObject.url: false;
+var successCodes = typeof(data.queryStringObject.successCodes) == 'object' && data.queryStringObject.successCodes instanceOf Array && data.payload.successCodes.length > 0? data.queryStringObject.successCodes: false;
+
+}
+
 // ping handler
 handlers.ping = function(data,callback){
   callback(200);
